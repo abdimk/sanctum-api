@@ -2,7 +2,7 @@
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
-use App\Models\Product;
+use App\Http\Controllers\ProductController;
 
 /*
 |--------------------------------------------------------------------------
@@ -15,21 +15,14 @@ use App\Models\Product;
 |
 */
 
-Route::get('/products', function(){
-    return Product::all()."\n";
-});
-
-// post a product section
-Route::post('/products', function(){
-    return Product::create([
-        'name' => 'Product-one',
-        'slug' => 'product-one',
-        'description' => 'This is product one',
-        'price' => "99.99"
-    ])."\n";
-});
+// Route::get('/products',[ProductController::class, 'index']);
 
 
+// //store
+// ROute::post('/products', [ProductController::class, 'store']);
+
+
+Route::resource('/products', ProductController::class);
 
 
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
