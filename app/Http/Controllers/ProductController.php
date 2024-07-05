@@ -11,7 +11,7 @@ class ProductController extends Controller
      */
     public function index()
     {
-        return Product::all()."\n";
+        return Product::all();
     }
 
     /**
@@ -25,7 +25,7 @@ class ProductController extends Controller
             'price'=> 'required'
         ]);
 
-        return Product::create($request)."\n";
+        return Product::create($request);
     }
 
     /**
@@ -33,7 +33,7 @@ class ProductController extends Controller
      */
     public function show(string $id)
     {
-        //
+        return Product::find($id);
     }
 
     /**
@@ -41,7 +41,17 @@ class ProductController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        //
+        $request = $request->validate([
+            'name' => 'required',
+            'slug' => 'required',
+            'price' => 'required'
+        ]);
+
+        $product = Product::find($id);
+
+        $product->update($request);
+
+        return $product;
     }
 
     /**
@@ -49,6 +59,18 @@ class ProductController extends Controller
      */
     public function destroy(string $id)
     {
-        //
+        return Product::destroy($id);
+    }
+
+
+    /**
+     *  @param str $name
+     *  @return Illuminate\Http\Response
+     * Search for a product
+     */
+
+    
+    public function search($name){
+        return Product::where('name', 'like','%'.$name.'%')->get();
     }
 }
