@@ -3,7 +3,7 @@
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ProductController;
-
+use App\Http\Controllers\AuthController;
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -21,14 +21,30 @@ use App\Http\Controllers\ProductController;
 // //store
 // ROute::post('/products', [ProductController::class, 'store']);
 
-
-Route::resource('/products', ProductController::class);
-
 // Search Route
 //Route::get('/products/search/{name}', [ProductController::class, 'search']);
 
+
+//Public Routes
+
+//regester route
+Route::post('/register', [AuthController::class, 'register']);
+
+
+Route::get('/products', [ProductController::class, 'index']);
+Route::get('/products/{id}', [ProductController::class, 'show']);
+Route::get('/products/search/{name}', [ProductController::class, 'search']);
+
+
+
+
+
+// Authenticated Routes
 Route::group(['middleware'=>['auth:sanctum']], function(){
-    Route::get('/products/search/{name}', [ProductController::class, 'search']);
+    Route::post('/products',[ProductController::class, 'store']);
+    Route::put('/products/{id}', [ProductController::class, 'update']);
+    Route::delete('/products/{id}', [ProductController::class, 'destroy']);
+
 });
 
 
